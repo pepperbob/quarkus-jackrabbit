@@ -39,7 +39,7 @@
             security manager:
             class: FQN of class implementing the JackrabbitSecurityManager interface
         -->
-        <SecurityManager class="org.apache.jackrabbit.core.security.simple.SimpleSecurityManager" workspaceName="security">
+        <SecurityManager class="org.apache.jackrabbit.core.DefaultSecurityManager" workspaceName="security">
             <!--
             workspace access:
             class: FQN of class implementing the WorkspaceAccessManager interface
@@ -88,7 +88,7 @@
             persistence manager of the workspace:
             class: FQN of class implementing the PersistenceManager interface
         -->
-        <PersistenceManager class="org.apache.jackrabbit.core.persistence.bundle.DerbyPersistenceManager">
+        <PersistenceManager class="org.apache.jackrabbit.core.persistence.pool.DerbyPersistenceManager">
           <param name="url" value="jdbc:derby:${wsp.home}/db;create=true"/>
           <param name="schemaObjectPrefix" value="${wsp.name}_"/>
         </PersistenceManager>
