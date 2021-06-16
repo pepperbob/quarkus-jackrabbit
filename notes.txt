@@ -1,0 +1,11 @@
+Credentials:
+- SimpleWebdavServlet#getCredentialsProvider
+  -> Custom CredentialsProvider um Token aus HTTP-Request-Param zu lesen
+  -> Bastelt Credentials Objekt zusammen
+  -> AbstractLoginModule bekommt diese Credentials um das Subject/Principal rauszulesen
+
+- Repo ist RepositoryImpl
+    - config via XML
+    - oder RepositoryConfig Class (eher nein)
+
+    - PostgreSQLPersistenceManager existiert, aber kein postgresfilesystem
