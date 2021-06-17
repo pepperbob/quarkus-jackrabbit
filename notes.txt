@@ -1,3 +1,9 @@
+curl stuff:
+
+curl -v -XPOST --data-binary @test-docs/hello.txt http://localhost:8080/hello/hello.txt -H"Content-Type: text/plain"
+curl -v -XPOST --data-binary @test-docs/test.odt http://localhost:8080/hello/test123.odt -H"Content-Type: application/odt"
+
+
 Credentials:
 - SimpleWebdavServlet#getCredentialsProvider
   -> Custom CredentialsProvider um Token aus HTTP-Request-Param zu lesen
