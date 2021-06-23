@@ -56,8 +56,8 @@
             <!-- <param name="config" value="${rep.home}/access.xml"/> -->
         </AccessManager>
 
-        <LoginModule class="org.apache.jackrabbit.core.security.simple.SimpleLoginModule">
-           <!-- 
+        <LoginModule class="de.byoc.webdav.jackrabbit.LocalLoginModule">
+           <!--
               anonymous user name ('anonymous' is the default value)
             -->
            <param name="anonymousId" value="anonymous"/>

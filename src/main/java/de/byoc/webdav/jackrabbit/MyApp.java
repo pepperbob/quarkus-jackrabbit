@@ -3,16 +3,25 @@ package de.byoc.webdav.jackrabbit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.jcr.*;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.UUID;
+
+import javax.inject.Inject;
+import javax.jcr.Binary;
+import javax.jcr.Node;
+import javax.jcr.Repository;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/hello")
 public class MyApp {
@@ -26,8 +35,7 @@ public class MyApp {
   @Path("/{filename: .+}")
   public Response hello(byte[] body, @PathParam("filename") String filename,
                         @HeaderParam("Content-Type") String contentType) throws RepositoryException {
-    Session session = repo.login(
-            new SimpleCredentials("admin", "admin".toCharArray()));
+    Session session = repo.login(new LocalAdminCredentials());
     String fileId = UUID.randomUUID().toString();
     try {
       Binary binary = session.getValueFactory().createBinary(new ByteArrayInputStream(body));
@@ -52,8 +60,7 @@ public class MyApp {
   @Path("/{fileId: .+}")
   @Produces(MediaType.TEXT_PLAIN)
   public Response getFile(@PathParam("fileId") String fileId) throws RepositoryException {
-    Session session = repo.login(
-            new SimpleCredentials("admin", "admin".toCharArray()));
+    Session session = repo.login(new LocalAdminCredentials());
     try {
       Node folder = session.getRootNode();
 
