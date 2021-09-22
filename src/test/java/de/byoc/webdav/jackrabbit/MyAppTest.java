@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -44,6 +45,12 @@ public class MyAppTest {
             .post("/hello/world_12.json")
             .then()
             .statusCode(202);
+
+        final Session sess = repo.login(new LocalAdminCredentials());
+        var sec = sess.getRootNode().addNode("secrets").addNode("abc");
+        sec.setProperty("username", "klaus karli");
+        sess.save();
+        sess.logout();
 
         given()
             .log().all()

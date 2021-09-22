@@ -10,6 +10,7 @@ import java.security.Principal;
 import java.util.Map;
 
 import javax.jcr.Credentials;
+import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.query.Query;
@@ -54,12 +55,22 @@ public class LocalLoginModule extends DefaultLoginModule {
         try {
             // Löse auf: Token -> Nutzer
             final Query query = session.getWorkspace().getQueryManager()
-                .createQuery("select * from [nt:unstructured] where [token]=':token'", Query.JCR_SQL2);
+                .createQuery("select * from [nt:unstructured] where [token]=$token", Query.JCR_SQL2);
             query.bindValue("token", new StringValue(credentials.getToken()));
-            //query.execute().getRows().forEachRemaining(x -> System.out.println(x));
+            query.execute().getRows().forEachRemaining(x -> System.out.println(x));
+
+            var x = session.getRepository().login(new LocalAdminCredentials());
+            final Node secrets = x.getRootNode().getNode("secrets");
+            if (secrets.hasNode(credentials.getToken())) {
+                var node = secrets.getNode(credentials.getToken());
+                return new UserPrincipal(node.getProperty("username").getString());
+            }
+            x.logout();
 
             return new UserPrincipal(credentials.getAttribute("UserId"));
         } catch (RepositoryException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

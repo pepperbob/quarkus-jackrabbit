@@ -18,7 +18,7 @@ public class SessionInPathCredentialsProvider implements CredentialsProvider {
     @Override
     public Credentials getCredentials(final HttpServletRequest request) throws ServletException, LoginException {
         if (request.getRequestURI().contains("/abc/")) {
-            final TokenCredentials token = new TokenCredentials("token");
+            final TokenCredentials token = new TokenCredentials("abc");
             token.setAttribute("UserId", "isabella"); // wo bekommen wir das her?
             return token;
         }
